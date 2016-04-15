@@ -5,6 +5,9 @@
  */
 package org.unitec;
 
+import java.sql.*;
+
+
 /**
  *
  * @author T-101
@@ -43,6 +46,12 @@ public class VentanaFacil extends javax.swing.JFrame {
         textoNombre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textoNombreActionPerformed(evt);
+            }
+        });
+
+        textoEdad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textoEdadActionPerformed(evt);
             }
         });
 
@@ -101,13 +110,29 @@ public class VentanaFacil extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         try {
-        ModeloConexion.conectarse("root", null);
+        
+        //HAREMOS UNA INSERCION CON JDBC A LA TABLA FACIL
+        //PASO 1 CREAR UN OBJETO DE TIPO CONEXION
+          Connection con=  ModeloConexion.conectarse("root", "");
+          
+          //Paso 2 con esa conexion invocar un statement preparado
+         PreparedStatement st= con.prepareStatement("insert into FACIL(nombre, edad) values(?,?)");
+         st.setString(1, textoNombre.getText());
+         st.setInt(2, Integer.parseInt(textoEdad.getText()));
+         st.execute();
+         etiquetaInformacion.setText(" Registro Insertado");
+         
+                  
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
                 
         
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void textoEdadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textoEdadActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textoEdadActionPerformed
 
     /**
      * @param args the command line arguments
